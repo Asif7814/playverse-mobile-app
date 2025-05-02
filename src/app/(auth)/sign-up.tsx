@@ -5,6 +5,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 
 import { useThemeContext } from "@/src/context/ThemeContext";
+import { useAuthContext } from "@/src/context/AuthContext";
+
 import { styles, textStyles } from "@/src/theme/styles";
 
 import KeyboardDismissWrapper from "@/src/components/ui/KeyboardDismissWrapper";
@@ -15,6 +17,7 @@ export default function SignUpScreen() {
     const insets = useSafeAreaInsets();
     const router = useRouter();
     const [themeColors] = useThemeContext();
+    const [registerUser] = useAuthContext();
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -33,8 +36,13 @@ export default function SignUpScreen() {
         setPassword(text);
     }
 
-    function handleSignUpFormSubmission() {
-        router.push("/verify-email");
+    async function handleSignUpFormSubmission() {
+        const { message, data } = await registerUser(username, email, password);
+
+        if (data) {
+            console.log(message, data);
+            router.push("/verify-email");
+        }
     }
 
     return (
