@@ -1,9 +1,9 @@
 import { Redirect, Stack } from "expo-router";
-
-// Replace temp value with actual auth logic later
-const isSignedIn = false;
+import { useAuthContext } from "@/src/context/AuthContext";
 
 export default function AppLayout() {
+    const { isSignedIn } = useAuthContext();
+
     if (!isSignedIn) {
         return <Redirect href="/sign-in" />;
     }

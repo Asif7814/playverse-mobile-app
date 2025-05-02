@@ -1,9 +1,12 @@
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Text, View } from "react-native";
+import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 
 import { useThemeContext } from "@/src/context/ThemeContext";
+import { useAuthContext } from "@/src/context/AuthContext";
+
 import { styles, textStyles } from "@/src/theme/styles";
 
 import KeyboardDismissWrapper from "@/src/components/ui/KeyboardDismissWrapper";
@@ -12,12 +15,25 @@ import Input from "@/src/components/ui/Input";
 
 export default function VerifyEmailScreen() {
     const insets = useSafeAreaInsets();
+    const router = useRouter();
+
     const [themeColors] = useThemeContext();
+    const { toggleIsSignedIn, verifyUser } = useAuthContext();
 
     const [otp, setOtp] = useState("");
 
     function handleOtpChange(text: string) {
         setOtp(text);
+    }
+
+    async function handleVerifyEmailFormSubmission() {
+        const { message, data } = await verifyUser(otp);
+
+        if (data) {
+            console.log(message, data);
+            toggleIsSignedIn();
+            router.navigate("/");
+        }
     }
 
     return (
@@ -61,7 +77,10 @@ export default function VerifyEmailScreen() {
                             />
                         }
                     />
-                    <Button title="Confirm" />
+                    <Button
+                        title="Confirm"
+                        onPress={handleVerifyEmailFormSubmission}
+                    />
                 </View>
             </View>
         </KeyboardDismissWrapper>

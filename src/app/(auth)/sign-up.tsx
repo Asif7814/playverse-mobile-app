@@ -17,7 +17,7 @@ export default function SignUpScreen() {
     const insets = useSafeAreaInsets();
     const router = useRouter();
     const [themeColors] = useThemeContext();
-    const [registerUser] = useAuthContext();
+    const { registerUser } = useAuthContext();
 
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
