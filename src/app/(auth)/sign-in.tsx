@@ -1,20 +1,140 @@
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Text, View } from "react-native";
+import { Link } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+
 import { useThemeContext } from "@/src/context/ThemeContext";
 import { styles, textStyles } from "@/src/theme/styles";
 
+import Button from "@/src/components/ui/Button";
+import Input from "@/src/components/ui/Input";
+import CheckBox from "@/src/components/ui/CheckBox";
+
 export default function SignInScreen() {
+    const insets = useSafeAreaInsets();
     const [themeColors] = useThemeContext();
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState<Boolean>(false);
+
+    function handleEmailChange(text: string) {
+        setEmail(text);
+    }
+
+    function handlePasswordChange(text: string) {
+        setPassword(text);
+    }
 
     return (
         <View
             style={[
                 styles.container,
-                { backgroundColor: themeColors.background },
+                {
+                    paddingTop: insets.top,
+                    paddingBottom: insets.bottom,
+                    backgroundColor: themeColors.background,
+                },
             ]}
         >
-            <Text style={[textStyles.xl, { color: themeColors.text }]}>
-                Sign in
-            </Text>
+            {/* Sign in Form */}
+            <View style={{ flex: 3, justifyContent: "center", gap: 24 }}>
+                <Text style={[textStyles.xl, { color: themeColors.text }]}>
+                    Sign in
+                </Text>
+
+                <View style={{ gap: 16 }}>
+                    <Input
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={handleEmailChange}
+                        leftIcon={
+                            <Ionicons
+                                name="mail"
+                                size={16}
+                                color={themeColors.input}
+                            />
+                        }
+                        keyboardType="email-address"
+                    />
+                    <Input
+                        placeholder="Password"
+                        value={password}
+                        onChangeText={handlePasswordChange}
+                        leftIcon={
+                            <Ionicons
+                                name="lock-closed"
+                                size={16}
+                                color={themeColors.input}
+                            />
+                        }
+                        rightIcon={
+                            <Ionicons
+                                name="eye"
+                                size={16}
+                                color={themeColors.input}
+                                onPress={() => {
+                                    console.log("Toggling password visibility");
+                                }}
+                            />
+                        }
+                    />
+                </View>
+
+                <Button title="Sign in" />
+
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
+                >
+                    <CheckBox
+                        title="Remember Me"
+                        checked={rememberMe}
+                        onToggle={(value) => {
+                            setRememberMe(value);
+                        }}
+                    />
+
+                    <Link
+                        href="/forgot-password"
+                        style={[
+                            textStyles.sm,
+                            { color: themeColors.primary, fontWeight: 500 },
+                        ]}
+                    >
+                        Forgot Password?
+                    </Link>
+                </View>
+            </View>
+
+            {/* Sign up Link */}
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "flex-end",
+                    gap: 8,
+                }}
+            >
+                <Text style={(textStyles.sm, { color: themeColors.text })}>
+                    Don't have an account?
+                </Text>
+
+                <Link
+                    href="/sign-up"
+                    style={[
+                        textStyles.sm,
+                        { color: themeColors.primary, fontWeight: 500 },
+                    ]}
+                >
+                    Create an account
+                </Link>
+            </View>
         </View>
     );
 }
