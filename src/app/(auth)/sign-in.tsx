@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useThemeContext } from "@/src/context/ThemeContext";
 import { styles, textStyles } from "@/src/theme/styles";
 
+import KeyboardDismissWrapper from "@/src/components/ui/KeyboardDismissWrapper";
 import Button from "@/src/components/ui/Button";
 import Input from "@/src/components/ui/Input";
 import CheckBox from "@/src/components/ui/CheckBox";
@@ -29,114 +30,110 @@ export default function SignInScreen() {
     }
 
     return (
-        <View
-            style={[
-                styles.container,
-                {
-                    paddingTop: insets.top,
-                    paddingBottom: insets.bottom,
-                    backgroundColor: themeColors.background,
-                },
-            ]}
-        >
-            {/* Sign in Form */}
-            <View style={{ flex: 3, justifyContent: "center", gap: 24 }}>
-                <Text style={[textStyles.xl, { color: themeColors.text }]}>
-                    Sign in
-                </Text>
-
-                <View style={{ gap: 16 }}>
-                    <Input
-                        placeholder="Email"
-                        value={email}
-                        onChangeText={handleEmailChange}
-                        leftIcon={
-                            <Ionicons
-                                name="mail"
-                                size={16}
-                                color={themeColors.input}
-                            />
-                        }
-                        keyboardType="email-address"
-                    />
-                    <Input
-                        placeholder="Password"
-                        value={password}
-                        onChangeText={handlePasswordChange}
-                        secureTextEntry={!showPassword}
-                        leftIcon={
-                            <Ionicons
-                                name="lock-closed"
-                                size={16}
-                                color={themeColors.input}
-                            />
-                        }
-                        rightIcon={
-                            <Ionicons
-                                name={showPassword ? "eye" : "eye-off"}
-                                size={18}
-                                color={themeColors.input}
-                                onPress={() => {
-                                    setShowPassword(!showPassword);
-                                }}
-                            />
-                        }
-                    />
+        <KeyboardDismissWrapper>
+            <View
+                style={[
+                    styles.container,
+                    {
+                        paddingTop: insets.top,
+                        paddingBottom: insets.bottom,
+                        backgroundColor: themeColors.background,
+                    },
+                ]}
+            >
+                {/* Sign in Form */}
+                <View style={{ flex: 8, justifyContent: "center", gap: 24 }}>
+                    <Text style={[textStyles.xl, { color: themeColors.text }]}>
+                        Sign in
+                    </Text>
+                    <View style={{ gap: 16 }}>
+                        <Input
+                            placeholder="Email"
+                            value={email}
+                            onChangeText={handleEmailChange}
+                            leftIcon={
+                                <Ionicons
+                                    name="mail"
+                                    size={16}
+                                    color={themeColors.input}
+                                />
+                            }
+                            keyboardType="email-address"
+                        />
+                        <Input
+                            placeholder="Password"
+                            value={password}
+                            onChangeText={handlePasswordChange}
+                            secureTextEntry={!showPassword}
+                            leftIcon={
+                                <Ionicons
+                                    name="lock-closed"
+                                    size={16}
+                                    color={themeColors.input}
+                                />
+                            }
+                            rightIcon={
+                                <Ionicons
+                                    name={showPassword ? "eye" : "eye-off"}
+                                    size={18}
+                                    color={themeColors.input}
+                                    onPress={() => {
+                                        setShowPassword(!showPassword);
+                                    }}
+                                />
+                            }
+                        />
+                    </View>
+                    <Button title="Sign in" />
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                        }}
+                    >
+                        <CheckBox
+                            title="Remember Me"
+                            checked={rememberMe}
+                            onToggle={(value) => {
+                                setRememberMe(value);
+                            }}
+                        />
+                        <Link
+                            href="/forgot-password"
+                            style={[
+                                textStyles.sm,
+                                { color: themeColors.primary, fontWeight: 500 },
+                            ]}
+                        >
+                            Forgot Password?
+                        </Link>
+                    </View>
                 </View>
-
-                <Button title="Sign in" />
-
+                {/* Sign up Link */}
                 <View
                     style={{
+                        flex: 1,
                         flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        justifyContent: "center",
+                        alignItems: "flex-end",
+                        gap: 8,
                     }}
                 >
-                    <CheckBox
-                        title="Remember Me"
-                        checked={rememberMe}
-                        onToggle={(value) => {
-                            setRememberMe(value);
-                        }}
-                    />
-
+                    <Text style={(textStyles.sm, { color: themeColors.text })}>
+                        Don't have an account?
+                    </Text>
                     <Link
-                        href="/forgot-password"
+                        href="/sign-up"
                         style={[
                             textStyles.sm,
                             { color: themeColors.primary, fontWeight: 500 },
                         ]}
                     >
-                        Forgot Password?
+                        Create an account
                     </Link>
                 </View>
             </View>
-
-            {/* Sign up Link */}
-            <View
-                style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "flex-end",
-                    gap: 8,
-                }}
-            >
-                <Text style={(textStyles.sm, { color: themeColors.text })}>
-                    Don't have an account?
-                </Text>
-
-                <Link
-                    href="/sign-up"
-                    style={[
-                        textStyles.sm,
-                        { color: themeColors.primary, fontWeight: 500 },
-                    ]}
-                >
-                    Create an account
-                </Link>
-            </View>
-        </View>
+        </KeyboardDismissWrapper>
     );
 }

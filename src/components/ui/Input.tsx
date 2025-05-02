@@ -12,6 +12,7 @@ interface InputProps {
     rightIcon?: React.ReactNode;
     keyboardType?: "default" | "email-address" | "numeric";
     secureTextEntry?: boolean;
+    maxLength?: number;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -22,6 +23,7 @@ const Input: React.FC<InputProps> = ({
     rightIcon,
     keyboardType = "default",
     secureTextEntry = false,
+    maxLength,
 }) => {
     const [themeColors] = useThemeContext();
 
@@ -48,6 +50,7 @@ const Input: React.FC<InputProps> = ({
                     autoCorrect={false}
                     keyboardType={keyboardType}
                     secureTextEntry={secureTextEntry}
+                    maxLength={maxLength}
                     style={[
                         textStyles.md,
                         {
