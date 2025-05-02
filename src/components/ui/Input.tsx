@@ -11,6 +11,7 @@ interface InputProps {
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;
     keyboardType?: "default" | "email-address" | "numeric";
+    secureTextEntry?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -20,6 +21,7 @@ const Input: React.FC<InputProps> = ({
     leftIcon,
     rightIcon,
     keyboardType = "default",
+    secureTextEntry = false,
 }) => {
     const [themeColors] = useThemeContext();
 
@@ -45,6 +47,7 @@ const Input: React.FC<InputProps> = ({
                     autoCapitalize="none"
                     autoCorrect={false}
                     keyboardType={keyboardType}
+                    secureTextEntry={secureTextEntry}
                     style={[
                         textStyles.md,
                         {

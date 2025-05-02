@@ -17,6 +17,7 @@ export default function SignInScreen() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState<Boolean>(false);
 
     function handleEmailChange(text: string) {
@@ -62,6 +63,7 @@ export default function SignInScreen() {
                         placeholder="Password"
                         value={password}
                         onChangeText={handlePasswordChange}
+                        secureTextEntry={!showPassword}
                         leftIcon={
                             <Ionicons
                                 name="lock-closed"
@@ -71,11 +73,11 @@ export default function SignInScreen() {
                         }
                         rightIcon={
                             <Ionicons
-                                name="eye"
-                                size={16}
+                                name={showPassword ? "eye" : "eye-off"}
+                                size={18}
                                 color={themeColors.input}
                                 onPress={() => {
-                                    console.log("Toggling password visibility");
+                                    setShowPassword(!showPassword);
                                 }}
                             />
                         }

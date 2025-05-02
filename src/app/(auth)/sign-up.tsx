@@ -18,6 +18,7 @@ export default function SignUpScreen() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     function handleUsernameChange(text: string) {
         setUsername(text);
@@ -78,6 +79,7 @@ export default function SignUpScreen() {
                         placeholder="Password"
                         value={password}
                         onChangeText={handlePasswordChange}
+                        secureTextEntry={!showPassword}
                         leftIcon={
                             <Ionicons
                                 name="lock-closed"
@@ -87,11 +89,11 @@ export default function SignUpScreen() {
                         }
                         rightIcon={
                             <Ionicons
-                                name="eye"
+                                name={showPassword ? "eye" : "eye-off"}
                                 size={18}
                                 color={themeColors.input}
                                 onPress={() => {
-                                    console.log("Toggling password visibility");
+                                    setShowPassword(!showPassword);
                                 }}
                             />
                         }
