@@ -1,7 +1,7 @@
 import { Redirect, Stack } from "expo-router";
 
 // Replace temp value with actual auth logic later
-const isSignedIn = true;
+const isSignedIn = false;
 
 export default function AppLayout() {
     if (!isSignedIn) {
