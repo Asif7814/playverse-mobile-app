@@ -1,10 +1,12 @@
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Text, View } from "react-native";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 
 import { useThemeContext } from "@/src/context/ThemeContext";
+import { useAuthContext } from "@/src/context/AuthContext";
+
 import { styles, textStyles } from "@/src/theme/styles";
 
 import KeyboardDismissWrapper from "@/src/components/ui/KeyboardDismissWrapper";
@@ -14,7 +16,10 @@ import CheckBox from "@/src/components/ui/CheckBox";
 
 export default function SignInScreen() {
     const insets = useSafeAreaInsets();
+    const router = useRouter();
+
     const [themeColors] = useThemeContext();
+    const { toggleIsSignedIn, loginUser } = useAuthContext();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -27,6 +32,16 @@ export default function SignInScreen() {
 
     function handlePasswordChange(text: string) {
         setPassword(text);
+    }
+
+    async function handleSignInFormSubmission() {
+        const { message, data } = await loginUser(email, password);
+
+        if (data) {
+            console.log(message, data);
+            toggleIsSignedIn();
+            router.navigate("/");
+        }
     }
 
     return (
@@ -84,7 +99,10 @@ export default function SignInScreen() {
                             }
                         />
                     </View>
-                    <Button title="Sign in" />
+                    <Button
+                        title="Sign in"
+                        onPress={handleSignInFormSubmission}
+                    />
                     <View
                         style={{
                             flexDirection: "row",

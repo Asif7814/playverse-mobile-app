@@ -70,9 +70,43 @@ function AuthContextProvider({ children }: any) {
         }
     }
 
+    async function loginUser(email: string, password: string) {
+        try {
+            const url = `${BASE_URL}/auth/users/login`;
+            const options = {
+                method: "POST",
+                headers: {
+                    accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            };
+
+            const res = await fetch(url, options);
+            const { message, data, error } = await res.json();
+
+            if (error) {
+                throw new Error(error);
+            }
+
+            return { message, data };
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <AuthContext.Provider
-            value={{ isSignedIn, toggleIsSignedIn, registerUser, verifyUser }}
+            value={{
+                isSignedIn,
+                toggleIsSignedIn,
+                registerUser,
+                verifyUser,
+                loginUser,
+            }}
         >
             {children}
         </AuthContext.Provider>
