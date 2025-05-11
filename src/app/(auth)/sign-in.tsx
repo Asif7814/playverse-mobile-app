@@ -19,7 +19,7 @@ export default function SignInScreen() {
     const router = useRouter();
 
     const [themeColors] = useThemeContext();
-    const { toggleIsSignedIn, loginUser } = useAuthContext();
+    const { loginUser } = useAuthContext();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -39,7 +39,6 @@ export default function SignInScreen() {
 
         if (data) {
             console.log(message, data);
-            toggleIsSignedIn();
             router.navigate("/");
         }
     }

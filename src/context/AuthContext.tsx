@@ -1,13 +1,38 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import {
+    saveToSecureStore,
+    getFromSecureStore,
+    deleteFromSecureStore,
+} from "@/src/utils/secureStore";
 
 const AuthContext = createContext<any>(null);
 
 function AuthContextProvider({ children }: any) {
     const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
     const [isSignedIn, setIsSignedIn] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
-    function toggleIsSignedIn() {
-        setIsSignedIn((prevState: boolean) => !prevState);
+    useEffect(() => {
+        checkSignedIn();
+    }, []);
+
+    async function checkSignedIn() {
+        try {
+            const refreshToken = await getFromSecureStore("refreshToken");
+            const accessToken = await getFromSecureStore("accessToken");
+            const user = await getFromSecureStore("user");
+
+            if (refreshToken && accessToken && user) {
+                setIsSignedIn(true);
+            } else {
+                setIsSignedIn(false);
+            }
+        } catch (error) {
+            console.error(error);
+            setIsSignedIn(false);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     async function registerUser(
@@ -64,6 +89,15 @@ function AuthContextProvider({ children }: any) {
                 throw new Error(error);
             }
 
+            // Save tokens to secure storage
+            await saveToSecureStore("refreshToken", data.tokens.refreshToken);
+            await saveToSecureStore("accessToken", data.tokens.accessToken);
+
+            // Save user to secure storage
+            await saveToSecureStore("user", JSON.stringify(data.user));
+
+            setIsSignedIn(true);
+
             return { message, data };
         } catch (error) {
             console.error(error);
@@ -92,6 +126,15 @@ function AuthContextProvider({ children }: any) {
                 throw new Error(error);
             }
 
+            // Save tokens to secure storage
+            await saveToSecureStore("refreshToken", data.tokens.refreshToken);
+            await saveToSecureStore("accessToken", data.tokens.accessToken);
+
+            // Save user to secure storage
+            await saveToSecureStore("user", JSON.stringify(data.user));
+
+            setIsSignedIn(true);
+
             return { message, data };
         } catch (error) {
             console.error(error);
@@ -102,7 +145,7 @@ function AuthContextProvider({ children }: any) {
         <AuthContext.Provider
             value={{
                 isSignedIn,
-                toggleIsSignedIn,
+                isLoading,
                 registerUser,
                 verifyUser,
                 loginUser,

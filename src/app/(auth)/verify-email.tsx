@@ -18,7 +18,7 @@ export default function VerifyEmailScreen() {
     const router = useRouter();
 
     const [themeColors] = useThemeContext();
-    const { toggleIsSignedIn, verifyUser } = useAuthContext();
+    const { verifyUser } = useAuthContext();
 
     const [otp, setOtp] = useState("");
 
@@ -31,7 +31,6 @@ export default function VerifyEmailScreen() {
 
         if (data) {
             console.log(message, data);
-            toggleIsSignedIn();
             router.navigate("/");
         }
     }

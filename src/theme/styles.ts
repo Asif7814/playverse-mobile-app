@@ -8,6 +8,11 @@ const styles = StyleSheet.create({
         paddingLeft: 24,
         paddingRight: 24,
     },
+    loadingIndicatorContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
 
     // --- Button Styles ---
     button: {
