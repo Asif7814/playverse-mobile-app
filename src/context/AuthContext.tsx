@@ -4,6 +4,7 @@ import {
     getFromSecureStore,
     deleteFromSecureStore,
 } from "@/src/utils/secureStore";
+import { SecureStoreKeys } from "@/src/constants/secureStoreKeys";
 
 const AuthContext = createContext<any>(null);
 
@@ -18,9 +19,13 @@ function AuthContextProvider({ children }: any) {
 
     async function checkSignedIn() {
         try {
-            const refreshToken = await getFromSecureStore("refreshToken");
-            const accessToken = await getFromSecureStore("accessToken");
-            const user = await getFromSecureStore("user");
+            const refreshToken = await getFromSecureStore(
+                SecureStoreKeys.RefreshToken
+            );
+            const accessToken = await getFromSecureStore(
+                SecureStoreKeys.AccessToken
+            );
+            const user = await getFromSecureStore(SecureStoreKeys.User);
 
             if (refreshToken && accessToken && user) {
                 setIsSignedIn(true);
@@ -90,11 +95,20 @@ function AuthContextProvider({ children }: any) {
             }
 
             // Save tokens to secure storage
-            await saveToSecureStore("refreshToken", data.tokens.refreshToken);
-            await saveToSecureStore("accessToken", data.tokens.accessToken);
+            await saveToSecureStore(
+                SecureStoreKeys.RefreshToken,
+                data.tokens.refreshToken
+            );
+            await saveToSecureStore(
+                SecureStoreKeys.AccessToken,
+                data.tokens.accessToken
+            );
 
             // Save user to secure storage
-            await saveToSecureStore("user", JSON.stringify(data.user));
+            await saveToSecureStore(
+                SecureStoreKeys.User,
+                JSON.stringify(data.user)
+            );
 
             setIsSignedIn(true);
 
@@ -127,11 +141,20 @@ function AuthContextProvider({ children }: any) {
             }
 
             // Save tokens to secure storage
-            await saveToSecureStore("refreshToken", data.tokens.refreshToken);
-            await saveToSecureStore("accessToken", data.tokens.accessToken);
+            await saveToSecureStore(
+                SecureStoreKeys.RefreshToken,
+                data.tokens.refreshToken
+            );
+            await saveToSecureStore(
+                SecureStoreKeys.AccessToken,
+                data.tokens.accessToken
+            );
 
             // Save user to secure storage
-            await saveToSecureStore("user", JSON.stringify(data.user));
+            await saveToSecureStore(
+                SecureStoreKeys.User,
+                JSON.stringify(data.user)
+            );
 
             setIsSignedIn(true);
 
