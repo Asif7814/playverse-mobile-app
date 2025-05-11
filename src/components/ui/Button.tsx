@@ -1,5 +1,5 @@
-import { TouchableOpacity, Text } from "react-native";
-import React from "react";
+import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
+import React, { useState } from "react";
 
 import { useThemeContext } from "@/src/context/ThemeContext";
 import { styles, textStyles } from "@/src/theme/styles";
@@ -7,9 +7,10 @@ import { styles, textStyles } from "@/src/theme/styles";
 interface ButtonProps {
     title: string;
     onPress?: () => void;
+    isLoading?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ title, onPress }) => {
+const Button: React.FC<ButtonProps> = ({ title, onPress, isLoading }) => {
     const [themeColors] = useThemeContext();
 
     return (
@@ -23,7 +24,11 @@ const Button: React.FC<ButtonProps> = ({ title, onPress }) => {
             ]}
             activeOpacity={0.8}
         >
-            <Text style={[textStyles.md, { color: "#FFF" }]}>{title}</Text>
+            {isLoading ? (
+                <ActivityIndicator size="small" color="#FFF" />
+            ) : (
+                <Text style={[textStyles.md, { color: "#FFF" }]}>{title}</Text>
+            )}
         </TouchableOpacity>
     );
 };

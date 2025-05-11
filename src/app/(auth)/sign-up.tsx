@@ -23,6 +23,7 @@ export default function SignUpScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     function handleUsernameChange(text: string) {
         setUsername(text);
@@ -37,10 +38,12 @@ export default function SignUpScreen() {
     }
 
     async function handleSignUpFormSubmission() {
+        setIsLoading(true);
         const { message, data } = await registerUser(username, email, password);
 
         if (data) {
             console.log(message, data);
+            setIsLoading(false);
             router.push("/verify-email");
         }
     }
@@ -115,6 +118,7 @@ export default function SignUpScreen() {
                     <Button
                         title="Sign up"
                         onPress={handleSignUpFormSubmission}
+                        isLoading={isLoading}
                     />
                 </View>
                 {/* Sign in Link */}

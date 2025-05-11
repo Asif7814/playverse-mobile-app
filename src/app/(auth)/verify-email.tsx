@@ -21,16 +21,19 @@ export default function VerifyEmailScreen() {
     const { verifyUser } = useAuthContext();
 
     const [otp, setOtp] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     function handleOtpChange(text: string) {
         setOtp(text);
     }
 
     async function handleVerifyEmailFormSubmission() {
+        setIsLoading(true);
         const { message, data } = await verifyUser(otp);
 
         if (data) {
             console.log(message, data);
+            setIsLoading(false);
             router.navigate("/");
         }
     }
@@ -79,6 +82,7 @@ export default function VerifyEmailScreen() {
                     <Button
                         title="Confirm"
                         onPress={handleVerifyEmailFormSubmission}
+                        isLoading={isLoading}
                     />
                 </View>
             </View>

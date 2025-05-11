@@ -25,6 +25,7 @@ export default function SignInScreen() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState<Boolean>(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     function handleEmailChange(text: string) {
         setEmail(text);
@@ -35,10 +36,12 @@ export default function SignInScreen() {
     }
 
     async function handleSignInFormSubmission() {
+        setIsLoading(true);
         const { message, data } = await loginUser(email, password);
 
         if (data) {
             console.log(message, data);
+            setIsLoading(false);
             router.navigate("/");
         }
     }
@@ -101,6 +104,7 @@ export default function SignInScreen() {
                     <Button
                         title="Sign in"
                         onPress={handleSignInFormSubmission}
+                        isLoading={isLoading}
                     />
                     <View
                         style={{
