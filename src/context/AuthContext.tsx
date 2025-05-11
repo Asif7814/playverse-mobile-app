@@ -10,6 +10,7 @@ const AuthContext = createContext<any>(null);
 
 function AuthContextProvider({ children }: any) {
     const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+
     const [isSignedIn, setIsSignedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -164,6 +165,50 @@ function AuthContextProvider({ children }: any) {
         }
     }
 
+    async function logoutUser() {
+        try {
+            const refreshToken = await getFromSecureStore(
+                SecureStoreKeys.RefreshToken
+            );
+
+            if (!refreshToken) {
+                throw new Error("No refresh token found");
+            }
+
+            const url = `${BASE_URL}/auth/users/logout`;
+            const options = {
+                method: "POST",
+                headers: {
+                    accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    refreshToken,
+                }),
+            };
+
+            const res = await fetch(url, options);
+            const { message, data, error } = await res.json();
+
+            if (error) {
+                throw new Error(error);
+            }
+
+            // Delete tokens from secure storage
+            await deleteFromSecureStore(SecureStoreKeys.RefreshToken);
+            await deleteFromSecureStore(SecureStoreKeys.AccessToken);
+
+            // Delete user from secure storage
+            await deleteFromSecureStore(SecureStoreKeys.User);
+
+            setIsSignedIn(false);
+
+            return { message, data };
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <AuthContext.Provider
             value={{
@@ -172,6 +217,7 @@ function AuthContextProvider({ children }: any) {
                 registerUser,
                 verifyUser,
                 loginUser,
+                logoutUser,
             }}
         >
             {children}
