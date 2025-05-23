@@ -40,6 +40,11 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 4,
     },
+
+    // --- TabBar Styles ---
+    tabBarLabel: {
+        fontSize: 10,
+    },
 });
 
 const textStyles = StyleSheet.create({

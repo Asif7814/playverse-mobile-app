@@ -30,9 +30,8 @@ export default function AppLayout() {
     }
 
     return (
-        <Stack initialRouteName="index">
-            <Stack.Screen name="index" options={{ title: "Home" }} />
-            <Stack.Screen name="settings" options={{ title: "Settings" }} />
+        <Stack initialRouteName="(tabs)">
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
     );
 }

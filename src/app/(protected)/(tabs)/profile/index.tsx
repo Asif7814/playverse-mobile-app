@@ -3,7 +3,7 @@ import { Link } from "expo-router";
 import { useThemeContext } from "@/src/context/ThemeContext";
 import { styles, textStyles } from "@/src/theme/styles";
 
-export default function IndexScreen() {
+export default function ProfileScreen() {
     const [themeColors] = useThemeContext();
 
     return (
@@ -14,11 +14,11 @@ export default function IndexScreen() {
             ]}
         >
             <Text style={[textStyles.xl, { color: themeColors.text }]}>
-                Home
+                Profile
             </Text>
 
             <Link
-                href="/settings"
+                href="/profile/settings"
                 style={[
                     textStyles.sm,
                     { color: themeColors.primary, fontWeight: 500 },
