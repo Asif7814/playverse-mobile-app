@@ -1,5 +1,5 @@
 import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 
 import { useThemeContext } from "@/src/context/ThemeContext";
 import { styles, textStyles } from "@/src/theme/styles";

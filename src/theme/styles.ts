@@ -1,5 +1,8 @@
 import { StyleSheet } from "react-native";
 
+const cardImageWidth = 96;
+const cardImageHeight = (cardImageWidth / 4) * 5; // 4:5 aspect ratio;
+
 const styles = StyleSheet.create({
     // --- Container Styles ---
     container: {
@@ -44,6 +47,15 @@ const styles = StyleSheet.create({
     // --- TabBar Styles ---
     tabBarLabel: {
         fontSize: 10,
+    },
+
+    // --- Card Styles ---
+    card: {
+        width: cardImageWidth,
+        height: cardImageHeight,
+
+        borderRadius: 8,
+        paddingHorizontal: 4,
     },
 });
 
