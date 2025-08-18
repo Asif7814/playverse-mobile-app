@@ -203,7 +203,7 @@ function AuthContextProvider({ children }: any) {
 
             setIsSignedIn(false);
 
-            return { message, data };
+            return { message: message, data: data };
         } catch (error) {
             console.error(error);
         }

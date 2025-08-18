@@ -75,7 +75,7 @@ export default function ExploreScreen() {
                 />
             </View>
 
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <HorizontalGameList title="For You" data={games} />
                 <HorizontalGameList title="Trending" data={games} />
                 <HorizontalGameList title="Most Popular" data={games} />
