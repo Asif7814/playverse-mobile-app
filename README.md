@@ -11,7 +11,7 @@ PlayVerse is a mobile game tracker app designed to help gamers organize and enha
 1. [Technologies Used](#technologies-used)
 2. [Installation](#installation)
 3. [Features](#features)
-4. [Contact](#features)
+4. [Contact](#contact)
 
 ---
 
