@@ -5,9 +5,11 @@ import { useThemeContext } from "@/src/context/ThemeContext";
 import { styles, textStyles } from "@/src/theme/styles";
 
 interface InputProps {
+    ref?: React.Ref<TextInput>;
     placeholder: string;
     value: string;
     onChangeText: (text: string) => void;
+    onFocus?: () => void;
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;
     keyboardType?: "default" | "email-address" | "numeric";
@@ -16,9 +18,11 @@ interface InputProps {
 }
 
 const Input: React.FC<InputProps> = ({
+    ref,
     placeholder,
     value,
     onChangeText,
+    onFocus,
     leftIcon,
     rightIcon,
     keyboardType = "default",
@@ -42,8 +46,10 @@ const Input: React.FC<InputProps> = ({
                 {leftIcon}
 
                 <TextInput
+                    ref={ref}
                     value={value}
                     onChangeText={onChangeText}
+                    onFocus={onFocus}
                     placeholder={placeholder}
                     placeholderTextColor={themeColors.input}
                     autoCapitalize="none"
