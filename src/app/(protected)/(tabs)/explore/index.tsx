@@ -28,7 +28,6 @@ export default function ExploreScreen() {
 
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [isSearchLoading, setIsSearchLoading] = useState(false);
 
     const [trendingGames, setTrendingGames] = useState([]);
     const [upcomingGames, setUpcomingGames] = useState([]);
@@ -96,9 +95,9 @@ export default function ExploreScreen() {
                               justifyContent: "space-between",
                               alignItems: "center",
                               gap: 16,
-                              paddingBottom: 16,
+                              paddingBottom: 24,
                           }
-                        : { paddingBottom: 16 }
+                        : { paddingBottom: 24 }
                 }
             >
                 <View style={isSearchActive && { flex: 1 }}>
@@ -111,9 +110,23 @@ export default function ExploreScreen() {
                         leftIcon={
                             <Ionicons
                                 name="search"
-                                size={16}
+                                size={20}
                                 color={themeColors.input}
                             />
+                        }
+                        rightIcon={
+                            isSearchActive &&
+                            searchQuery.length > 0 && (
+                                <TouchableOpacity
+                                    onPress={() => setSearchQuery("")}
+                                >
+                                    <Ionicons
+                                        name="close"
+                                        size={20}
+                                        color={themeColors.input}
+                                    />
+                                </TouchableOpacity>
+                            )
                         }
                     />
                 </View>
@@ -122,14 +135,17 @@ export default function ExploreScreen() {
                     <TextButton
                         title="Cancel"
                         onPress={() => {
-                            setIsSearchActive(false);
                             inputRef.current?.blur();
+                            setIsSearchActive(false);
+                            setTimeout(() => {
+                                setSearchQuery("");
+                            }, 75);
                         }}
                     />
                 )}
             </View>
 
-            {isSearchActive && <SearchOverlay />}
+            {isSearchActive && <SearchOverlay searchQuery={searchQuery} />}
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 <HorizontalGameList title="Trending Now" data={trendingGames} />

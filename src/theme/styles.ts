@@ -8,8 +8,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
-        paddingLeft: 24,
-        paddingRight: 24,
+        paddingHorizontal: 24,
     },
     loadingIndicatorContainer: {
         flex: 1,
@@ -20,12 +19,12 @@ const styles = StyleSheet.create({
     // --- Overlay Styles ---
     overlay: {
         position: "absolute",
-        alignItems: "center",
         left: 0,
         right: 0,
         bottom: 0,
         zIndex: 100,
-        padding: 16,
+        paddingHorizontal: 24,
+        paddingTop: 16,
     },
 
     // --- Button Styles ---
