@@ -1,7 +1,9 @@
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { View, ScrollView } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
+
+import { useGameContext } from "@/src/context/GameContext";
 
 import { useThemeContext } from "@/src/context/ThemeContext";
 import { styles } from "@/src/theme/styles";
@@ -12,38 +14,52 @@ import HorizontalGameList from "@/src/components/layouts/HorizontalGameList";
 export default function ExploreScreen() {
     const insets = useSafeAreaInsets();
     const [themeColors] = useThemeContext();
+    const { fetchGames } = useGameContext();
 
     const [searchQuery, setSearchQuery] = useState("");
 
-    // Mock data for games
-    const games = [
-        {
-            id: 1,
-            title: "Game 1",
-            poster_path: "https://critics.io/img/movies/poster-placeholder.png",
-        },
-        {
-            id: 2,
-            title: "Game 2",
-            poster_path: "https://critics.io/img/movies/poster-placeholder.png",
-        },
-        {
-            id: 3,
-            title: "Game 3",
-            poster_path: "https://critics.io/img/movies/poster-placeholder.png",
-        },
-        {
-            id: 4,
-            title: "Game 4",
-            poster_path: "https://critics.io/img/movies/poster-placeholder.png",
-        },
-        {
-            id: 5,
-            title: "Game 5",
-            poster_path: "https://critics.io/img/movies/poster-placeholder.png",
-        },
-        // Add more game objects as needed
-    ];
+    const [trendingGames, setTrendingGames] = useState([]);
+    const [upcomingGames, setUpcomingGames] = useState([]);
+    const [topRatedGames, setTopRatedGames] = useState([]);
+    const [cultClassicGames, setCultClassicGames] = useState([]);
+    const [indieGames, setIndieGames] = useState([]);
+
+    useEffect(() => {
+        async function loadGames() {
+            const trendingGamesData = await fetchGames(
+                "sortBy=hypes&startDate=2025-01-01T00:00:00.000Z&endDate=2025-08-18T00:00:00.000Z",
+                10
+            );
+            const upcomingGamesData = await fetchGames(
+                "sortBy=hypes&startDate=2025-09-01T00:00:00.000Z&endDate=2026-12-31T00:00:00.000Z",
+                10
+            );
+            const topRatedGamesData = await fetchGames(
+                "sortBy=total_rating&startDate=2020-09-01T00:00:00.000Z&endDate=2025-12-31T00:00:00.000Z",
+                10
+            );
+            const cultClassicGamesData = await fetchGames(
+                "sortBy=total_rating&startDate=2005-01-01T00:00:00.000Z&endDate=2020-12-31T00:00:00.000Z",
+                10
+            );
+            const indieGamesData = await fetchGames(
+                "sortBy=hypes&genres=Indie&startDate=2020-09-01T00:00:00.000Z&endDate=2025-08-18T00:00:00.000Z",
+                10
+            );
+
+            if (trendingGamesData) setTrendingGames(trendingGamesData);
+
+            if (upcomingGamesData) setUpcomingGames(upcomingGamesData);
+
+            if (topRatedGamesData) setTopRatedGames(topRatedGamesData);
+
+            if (cultClassicGamesData) setCultClassicGames(cultClassicGamesData);
+
+            if (indieGamesData) setIndieGames(indieGamesData);
+        }
+
+        loadGames();
+    }, []);
 
     function handleSearchQueryChange(text: string) {
         setSearchQuery(text);
@@ -76,12 +92,17 @@ export default function ExploreScreen() {
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false}>
-                <HorizontalGameList title="For You" data={games} />
-                <HorizontalGameList title="Trending" data={games} />
-                <HorizontalGameList title="Most Popular" data={games} />
-                <HorizontalGameList title="Upcoming Releases" data={games} />
-                <HorizontalGameList title="Top Rated" data={games} />
-                <HorizontalGameList title="Indie & Hidden Gems" data={games} />
+                <HorizontalGameList title="Trending Now" data={trendingGames} />
+                <HorizontalGameList
+                    title="Most Anticipated"
+                    data={upcomingGames}
+                />
+                <HorizontalGameList title="Top Rated" data={topRatedGames} />
+                <HorizontalGameList
+                    title="Cult Classics"
+                    data={cultClassicGames}
+                />
+                <HorizontalGameList title="Hidden Gems" data={indieGames} />
             </ScrollView>
         </View>
     );

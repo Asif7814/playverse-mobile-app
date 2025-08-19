@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -45,13 +45,18 @@ const HorizontalGameList: React.FC<HorizontalGameListProps> = ({
                     color={themeColors.text}
                 />
             </View>
-            <FlatList
-                data={data}
-                keyExtractor={(item) => String(item["id"])}
-                renderItem={({ item }) => <GameCard game={item} />}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-            />
+
+            {data.length === 0 ? (
+                <ActivityIndicator size="small" color={themeColors.primary} />
+            ) : (
+                <FlatList
+                    data={data}
+                    keyExtractor={(item) => String(item["id"])}
+                    renderItem={({ item }) => <GameCard game={item} />}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                />
+            )}
         </View>
     );
 };

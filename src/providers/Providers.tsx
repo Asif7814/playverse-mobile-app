@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { ThemeContextProvider } from "@/src/context/ThemeContext";
 import { AuthContextProvider } from "@/src/context/AuthContext";
+import { GameContextProvider } from "@/src/context/GameContext";
 
 interface ProvidersProps {
     children: ReactNode;
@@ -9,7 +10,9 @@ interface ProvidersProps {
 export default function Providers({ children }: ProvidersProps) {
     return (
         <ThemeContextProvider>
-            <AuthContextProvider>{children}</AuthContextProvider>
+            <AuthContextProvider>
+                <GameContextProvider>{children}</GameContextProvider>
+            </AuthContextProvider>
         </ThemeContextProvider>
     );
 }

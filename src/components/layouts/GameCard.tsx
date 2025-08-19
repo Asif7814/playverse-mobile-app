@@ -4,19 +4,20 @@ import { styles } from "@/src/theme/styles";
 
 interface GameCardProps {
     game: {
-        poster_path: string;
-        // Add other game properties as needed
+        id: number;
+        name: string;
+        coverImage: string;
     };
 }
 
 const GameCard: React.FC<GameCardProps> = ({ game }) => {
     function handlePress() {
-        console.log(`Game pressed`);
+        console.log(`Game pressed: ${game["name"]} (${game["id"]})`);
     }
 
     return (
         <TouchableOpacity onPress={handlePress}>
-            <Image source={{ uri: game["poster_path"] }} style={styles.card} />
+            <Image source={{ uri: game["coverImage"] }} style={styles.card} />
         </TouchableOpacity>
     );
 };
