@@ -12,9 +12,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { useGameContext } from "@/src/context/GameContext";
 
 import { useThemeContext } from "@/src/context/ThemeContext";
-import { styles, textStyles } from "@/src/theme/styles";
+import { styles } from "@/src/theme/styles";
 
 import Input from "@/src/components/ui/Input";
+import TextButton from "@/src/components/ui/TextButton";
 import HorizontalGameList from "@/src/components/layouts/HorizontalGameList";
 import SearchOverlay from "@/src/components/layouts/SearchOverlay";
 
@@ -25,10 +26,9 @@ export default function ExploreScreen() {
 
     const inputRef = useRef<TextInput>(null);
 
-    const [isSearchLoading, setIsSearchLoading] = useState(false);
-
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [isSearchLoading, setIsSearchLoading] = useState(false);
 
     const [trendingGames, setTrendingGames] = useState([]);
     const [upcomingGames, setUpcomingGames] = useState([]);
@@ -119,18 +119,13 @@ export default function ExploreScreen() {
                 </View>
 
                 {isSearchActive && (
-                    <TouchableOpacity
+                    <TextButton
+                        title="Cancel"
                         onPress={() => {
                             setIsSearchActive(false);
                             inputRef.current?.blur();
                         }}
-                    >
-                        <Text
-                            style={[textStyles.md, { color: themeColors.text }]}
-                        >
-                            Cancel
-                        </Text>
-                    </TouchableOpacity>
+                    />
                 )}
             </View>
 
