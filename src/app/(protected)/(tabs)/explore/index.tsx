@@ -1,12 +1,7 @@
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-    View,
-    ScrollView,
-    TouchableOpacity,
-    Text,
-    TextInput,
-} from "react-native";
+import { View, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import { useState, useEffect, useRef } from "react";
+import { useDebounce } from "use-debounce";
 import { Ionicons } from "@expo/vector-icons";
 
 import { useGameContext } from "@/src/context/GameContext";
@@ -28,6 +23,8 @@ export default function ExploreScreen() {
 
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [debouncedSearchQuery] = useDebounce(searchQuery, 300);
+
     const [searchResults, setSearchResults] = useState([]);
 
     const [trendingGames, setTrendingGames] = useState([]);
@@ -73,11 +70,30 @@ export default function ExploreScreen() {
         loadGames();
     }, []);
 
+    useEffect(() => {
+        let isCancelled = false;
+
+        async function search() {
+            if (debouncedSearchQuery.trim().length < 2) {
+                setSearchResults([]);
+                return;
+            }
+
+            const games = await searchGames(debouncedSearchQuery);
+            if (!isCancelled) {
+                setSearchResults(games || []);
+            }
+        }
+
+        search();
+
+        return () => {
+            isCancelled = true;
+        };
+    }, [debouncedSearchQuery]);
+
     async function handleSearchQueryChange(text: string) {
         setSearchQuery(text);
-
-        const games = await searchGames(text);
-        setSearchResults(games || []);
     }
 
     return (
