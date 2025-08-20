@@ -4,7 +4,6 @@ const GameContext = createContext<any>(null);
 
 function GameContextProvider({ children }: any) {
     const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
-    const [isLoading, setIsLoading] = useState(true);
 
     async function fetchGames(queries: string, limit: number) {
         try {
@@ -26,8 +25,29 @@ function GameContextProvider({ children }: any) {
             return data;
         } catch (error) {
             console.error(error);
-        } finally {
-            setIsLoading(false);
+        }
+    }
+
+    async function fetchGameByID(id: string) {
+        try {
+            const url = `${BASE_URL}/api/games/${id}`;
+            const options = {
+                method: "GET",
+                headers: {
+                    accept: "application/json",
+                },
+            };
+
+            const response = await fetch(url, options);
+            const { data, error } = await response.json();
+
+            if (error) {
+                throw new Error(error);
+            }
+
+            return data;
+        } catch (error) {
+            console.error(error);
         }
     }
 
@@ -51,13 +71,13 @@ function GameContextProvider({ children }: any) {
             return data;
         } catch (error) {
             console.error(error);
-        } finally {
-            setIsLoading(false);
         }
     }
 
     return (
-        <GameContext.Provider value={{ isLoading, fetchGames, searchGames }}>
+        <GameContext.Provider
+            value={{ fetchGames, fetchGameByID, searchGames }}
+        >
             {children}
         </GameContext.Provider>
     );
