@@ -22,12 +22,13 @@ import SearchOverlay from "@/src/components/layouts/SearchOverlay";
 export default function ExploreScreen() {
     const insets = useSafeAreaInsets();
     const [themeColors] = useThemeContext();
-    const { fetchGames } = useGameContext();
+    const { fetchGames, searchGames } = useGameContext();
 
     const inputRef = useRef<TextInput>(null);
 
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
 
     const [trendingGames, setTrendingGames] = useState([]);
     const [upcomingGames, setUpcomingGames] = useState([]);
@@ -72,8 +73,11 @@ export default function ExploreScreen() {
         loadGames();
     }, []);
 
-    function handleSearchQueryChange(text: string) {
+    async function handleSearchQueryChange(text: string) {
         setSearchQuery(text);
+
+        const games = await searchGames(text);
+        setSearchResults(games || []);
     }
 
     return (
@@ -145,7 +149,12 @@ export default function ExploreScreen() {
                 )}
             </View>
 
-            {isSearchActive && <SearchOverlay searchQuery={searchQuery} />}
+            {isSearchActive && (
+                <SearchOverlay
+                    searchQuery={searchQuery}
+                    searchResults={searchResults}
+                />
+            )}
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 <HorizontalGameList title="Trending Now" data={trendingGames} />

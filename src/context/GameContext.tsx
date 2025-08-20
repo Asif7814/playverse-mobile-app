@@ -24,7 +24,31 @@ function GameContextProvider({ children }: any) {
             }
 
             return data;
-            // console.log(data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    async function searchGames(title: string) {
+        try {
+            const url = `${BASE_URL}/api/games/search?title=${title}`;
+            const options = {
+                method: "GET",
+                headers: {
+                    accept: "application/json",
+                },
+            };
+
+            const response = await fetch(url, options);
+            const { data, error } = await response.json();
+
+            if (error) {
+                throw new Error(error);
+            }
+
+            return data;
         } catch (error) {
             console.error(error);
         } finally {
@@ -33,7 +57,7 @@ function GameContextProvider({ children }: any) {
     }
 
     return (
-        <GameContext.Provider value={{ isLoading, fetchGames }}>
+        <GameContext.Provider value={{ isLoading, fetchGames, searchGames }}>
             {children}
         </GameContext.Provider>
     );
