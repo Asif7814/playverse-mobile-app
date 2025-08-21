@@ -4,6 +4,13 @@ export default function ExploreLayout() {
     return (
         <Stack initialRouteName="index">
             <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen
+                name="games/[id]"
+                options={{
+                    title: "",
+                    headerBackTitle: "Explore",
+                }}
+            />
         </Stack>
     );
 }

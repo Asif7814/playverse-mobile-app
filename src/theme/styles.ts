@@ -67,6 +67,13 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 4,
     },
+    bigCard: {
+        width: cardImageWidth * 4,
+        height: cardImageHeight * 4,
+
+        borderRadius: 8,
+        paddingHorizontal: 4,
+    },
 });
 
 const textStyles = StyleSheet.create({
