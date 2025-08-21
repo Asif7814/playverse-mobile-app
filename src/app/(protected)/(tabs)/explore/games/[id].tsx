@@ -1,17 +1,26 @@
 import { View, ScrollView, Image, Text, ActivityIndicator } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useGameContext } from "@/src/context/GameContext";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
-import { useThemeContext } from "@/src/context/ThemeContext";
-import { styles, textStyles } from "@/src/theme/styles";
+import { useNavigation } from "@react-navigation/native";
 import { useLocalSearchParams } from "expo-router";
+import { useGameContext } from "@/src/context/GameContext";
+import { useThemeContext } from "@/src/context/ThemeContext";
+
+import { styles, textStyles } from "@/src/theme/styles";
 
 export default function GameDetailsScreen() {
     const [themeColors] = useThemeContext();
+    const navigation = useNavigation();
+    const { id, name } = useLocalSearchParams();
     const { fetchGameByID } = useGameContext();
 
-    const { id, name } = useLocalSearchParams();
     const [gameDetails, setGameDetails] = useState(null);
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            title: name,
+        });
+    }, []);
 
     useEffect(() => {
         async function fetchGameDetails() {

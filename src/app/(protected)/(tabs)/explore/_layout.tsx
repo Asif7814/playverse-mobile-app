@@ -7,8 +7,7 @@ export default function ExploreLayout() {
             <Stack.Screen
                 name="games/[id]"
                 options={{
-                    title: "",
-                    headerBackTitle: "Explore",
+                    headerBackButtonDisplayMode: "minimal",
                 }}
             />
         </Stack>
