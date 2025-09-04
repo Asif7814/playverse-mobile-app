@@ -15,6 +15,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    timeToBeatContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 2,
+        padding: 4,
+        borderWidth: 0.5,
+        borderRadius: 8,
+    },
 
     // --- Overlay Styles ---
     overlay: {
@@ -68,8 +77,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
     },
     bigCard: {
-        width: cardImageWidth * 4,
-        height: cardImageHeight * 4,
+        width: cardImageWidth * 3,
+        height: cardImageHeight * 3,
 
         borderRadius: 8,
         paddingHorizontal: 4,
