@@ -13,7 +13,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useLocalSearchParams } from "expo-router";
 import { useGameContext } from "@/src/context/GameContext";
+import { useUserGameLibraryContext } from "@/src/context/UserGameLibraryContext";
 import { useThemeContext } from "@/src/context/ThemeContext";
+import { GameDetails } from "@/src/types/Game.types";
 
 import { styles, textStyles } from "@/src/theme/styles";
 
@@ -23,6 +25,7 @@ export default function GameDetailsScreen() {
     const navigation = useNavigation();
     const { id, name } = useLocalSearchParams();
     const { fetchGameByID } = useGameContext();
+    const { addToLibrary } = useUserGameLibraryContext();
 
     const [gameDetails, setGameDetails] = useState<GameDetails | null>(null);
 
@@ -55,7 +58,13 @@ export default function GameDetailsScreen() {
         fetchGameDetails();
     }, []);
 
-    console.log("Game Details:", gameDetails);
+    async function handleAddToLibrary() {
+        if (gameDetails) {
+            const success = await addToLibrary(gameDetails);
+
+            console.log(success);
+        }
+    }
 
     return (
         <View
@@ -124,40 +133,48 @@ export default function GameDetailsScreen() {
 
                     <View style={{ paddingVertical: 24, gap: 8 }}>
                         <View style={{ flexDirection: "row", gap: 8 }}>
-                            <Text
-                                style={[
-                                    textStyles.md,
-                                    {
-                                        color: themeColors.text,
-                                        flex: 1,
-                                        textAlign: "center",
-                                        borderColor: themeColors.text,
-                                        borderWidth: 0.5,
-                                        borderRadius: 8,
-                                        paddingHorizontal: 8,
-                                        paddingVertical: 4,
-                                    },
-                                ]}
+                            <TouchableOpacity
+                                style={{ flex: 1 }}
+                                onPress={handleAddToLibrary}
                             >
-                                Add to Library
-                            </Text>
-                            <Text
-                                style={[
-                                    textStyles.md,
-                                    {
-                                        color: themeColors.text,
-                                        flex: 1,
-                                        textAlign: "center",
-                                        borderColor: themeColors.text,
-                                        borderWidth: 0.5,
-                                        borderRadius: 8,
-                                        paddingHorizontal: 8,
-                                        paddingVertical: 4,
-                                    },
-                                ]}
+                                <Text
+                                    style={[
+                                        textStyles.md,
+                                        {
+                                            color: themeColors.text,
+                                            textAlign: "center",
+                                            borderColor: themeColors.text,
+                                            borderWidth: 0.5,
+                                            borderRadius: 8,
+                                            paddingHorizontal: 8,
+                                            paddingVertical: 4,
+                                        },
+                                    ]}
+                                >
+                                    Add to Library
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{ flex: 1 }}
+                                onPress={() => console.log("Rate Game")}
                             >
-                                Not Rated
-                            </Text>
+                                <Text
+                                    style={[
+                                        textStyles.md,
+                                        {
+                                            color: themeColors.text,
+                                            textAlign: "center",
+                                            borderColor: themeColors.text,
+                                            borderWidth: 0.5,
+                                            borderRadius: 8,
+                                            paddingHorizontal: 8,
+                                            paddingVertical: 4,
+                                        },
+                                    ]}
+                                >
+                                    Not Rated
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                         <View
                             style={{
@@ -165,40 +182,48 @@ export default function GameDetailsScreen() {
                                 gap: 8,
                             }}
                         >
-                            <Text
-                                style={[
-                                    textStyles.md,
-                                    {
-                                        color: themeColors.text,
-                                        flex: 1,
-                                        textAlign: "center",
-                                        borderColor: themeColors.text,
-                                        borderWidth: 0.5,
-                                        borderRadius: 8,
-                                        paddingHorizontal: 8,
-                                        paddingVertical: 4,
-                                    },
-                                ]}
+                            <TouchableOpacity
+                                style={{ flex: 1 }}
+                                onPress={() => console.log("Add Platform")}
                             >
-                                Platform
-                            </Text>
-                            <Text
-                                style={[
-                                    textStyles.md,
-                                    {
-                                        color: themeColors.text,
-                                        flex: 1,
-                                        textAlign: "center",
-                                        borderColor: themeColors.text,
-                                        borderWidth: 0.5,
-                                        borderRadius: 8,
-                                        paddingHorizontal: 8,
-                                        paddingVertical: 4,
-                                    },
-                                ]}
+                                <Text
+                                    style={[
+                                        textStyles.md,
+                                        {
+                                            color: themeColors.text,
+                                            textAlign: "center",
+                                            borderColor: themeColors.text,
+                                            borderWidth: 0.5,
+                                            borderRadius: 8,
+                                            paddingHorizontal: 8,
+                                            paddingVertical: 4,
+                                        },
+                                    ]}
+                                >
+                                    Platform
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{ flex: 1 }}
+                                onPress={() => console.log("Add Format")}
                             >
-                                Format
-                            </Text>
+                                <Text
+                                    style={[
+                                        textStyles.md,
+                                        {
+                                            color: themeColors.text,
+                                            textAlign: "center",
+                                            borderColor: themeColors.text,
+                                            borderWidth: 0.5,
+                                            borderRadius: 8,
+                                            paddingHorizontal: 8,
+                                            paddingVertical: 4,
+                                        },
+                                    ]}
+                                >
+                                    Format
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
 
@@ -487,24 +512,4 @@ export default function GameDetailsScreen() {
             )}
         </View>
     );
-}
-
-interface GameDetails {
-    id: number;
-    name: string;
-    coverImage: string;
-    gameType: string | null;
-    description: string | null;
-    platforms: string[] | null;
-    genres: string[] | null;
-    releaseDate: string | null;
-    developers: { id: number; name: string }[] | null;
-    publishers: { id: number; name: string }[] | null;
-    trailers?: { id: number; thumbnail: string; video: string }[] | null;
-    screenshots?: string[] | null;
-    estimatedTimeToBeat?: {
-        story: number | null;
-        storyAndExtras: number | null;
-        completionist: number | null;
-    };
 }
