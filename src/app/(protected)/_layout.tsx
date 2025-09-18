@@ -32,6 +32,7 @@ export default function AppLayout() {
     return (
         <Stack initialRouteName="(tabs)">
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="games" options={{ headerShown: false }} />
         </Stack>
     );
 }

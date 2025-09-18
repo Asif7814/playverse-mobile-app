@@ -17,10 +17,10 @@ const GameCard: React.FC<GameCardProps> = ({ game, isUserGame = false }) => {
     const router = useRouter();
 
     async function handlePress() {
-        const gameId = isUserGame ? game.gameId : game.id;
+        const gameId = isUserGame ? game["gameId"] : game["id"];
 
         router.push({
-            pathname: "/explore/games/[id]",
+            pathname: "/games/[id]",
             params: { id: `${gameId}`, name: game["name"] },
         });
     }

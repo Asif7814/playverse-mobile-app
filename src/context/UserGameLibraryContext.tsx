@@ -46,8 +46,6 @@ function UserGameLibraryContextProvider({ children }: any) {
                 throw new Error(error);
             }
 
-            console.log("Game Added to Library:", data);
-
             setUserGameLibrary((prev: any[]) => [...prev, data]);
 
             return data ? "SUCCESS" : "FAILED";
@@ -64,8 +62,6 @@ function UserGameLibraryContextProvider({ children }: any) {
             if (error) {
                 throw new Error(error);
             }
-
-            console.log("User Game Library:", data);
 
             setUserGameLibrary(data);
 
