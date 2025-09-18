@@ -6,18 +6,22 @@ import { styles } from "@/src/theme/styles";
 interface GameCardProps {
     game: {
         id: number;
+        gameId: number;
         name: string;
         coverImage: string;
     };
+    isUserGame?: boolean;
 }
 
-const GameCard: React.FC<GameCardProps> = ({ game }) => {
+const GameCard: React.FC<GameCardProps> = ({ game, isUserGame = false }) => {
     const router = useRouter();
 
     async function handlePress() {
+        const gameId = isUserGame ? game.gameId : game.id;
+
         router.push({
             pathname: "/explore/games/[id]",
-            params: { id: `${game.id}`, name: game["name"] },
+            params: { id: `${gameId}`, name: game["name"] },
         });
     }
 

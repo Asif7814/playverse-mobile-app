@@ -7,7 +7,15 @@ const UserGameLibraryContext = createContext<any>(null);
 function UserGameLibraryContextProvider({ children }: any) {
     const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 
-    const [userGameLibrary, setUserGameLibrary] = useState<GameDetails[]>([]);
+    const [userGameLibrary, setUserGameLibrary] = useState<any[]>([]);
+
+    const [backloggedGames, setBackloggedGames] = useState<any[]>([]);
+    const [playingGames, setPlayingGames] = useState<any[]>([]);
+    const [completedGames, setCompletedGames] = useState<any[]>([]);
+
+    useEffect(() => {
+        getGamesFromLibrary();
+    }, []);
 
     async function addToLibrary(
         game: GameDetails,
@@ -40,9 +48,36 @@ function UserGameLibraryContextProvider({ children }: any) {
 
             console.log("Game Added to Library:", data);
 
-            setUserGameLibrary((prev: GameDetails[]) => [...prev, data]);
+            setUserGameLibrary((prev: any[]) => [...prev, data]);
 
             return data ? "SUCCESS" : "FAILED";
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function getGamesFromLibrary() {
+        try {
+            const response = await fetch(`${BASE_URL}/api/userGames`);
+            const { data, error } = await response.json();
+
+            if (error) {
+                throw new Error(error);
+            }
+
+            console.log("User Game Library:", data);
+
+            setUserGameLibrary(data);
+
+            setBackloggedGames(
+                data.filter((game: any) => game.status === "backlog")
+            );
+            setPlayingGames(
+                data.filter((game: any) => game.status === "playing")
+            );
+            setCompletedGames(
+                data.filter((game: any) => game.status === "completed")
+            );
         } catch (error) {
             console.error(error);
         }
@@ -51,6 +86,10 @@ function UserGameLibraryContextProvider({ children }: any) {
     return (
         <UserGameLibraryContext.Provider
             value={{
+                userGameLibrary,
+                backloggedGames,
+                playingGames,
+                completedGames,
                 addToLibrary,
             }}
         >

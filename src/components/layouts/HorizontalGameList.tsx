@@ -9,11 +9,13 @@ import GameCard from "@/src/components/layouts/GameCard";
 interface HorizontalGameListProps {
     title: string;
     data: any[]; // Adjust after defining the game type
+    isInUserLibrary?: boolean;
 }
 
 const HorizontalGameList: React.FC<HorizontalGameListProps> = ({
     title,
     data,
+    isInUserLibrary = false,
 }) => {
     const [themeColors] = useThemeContext();
 
@@ -51,8 +53,15 @@ const HorizontalGameList: React.FC<HorizontalGameListProps> = ({
             ) : (
                 <FlatList
                     data={data}
-                    keyExtractor={(item) => String(item["id"])}
-                    renderItem={({ item }) => <GameCard game={item} />}
+                    keyExtractor={(item) =>
+                        String(isInUserLibrary ? item["_id"] : item["id"])
+                    }
+                    renderItem={({ item }) => (
+                        <GameCard
+                            game={isInUserLibrary ? item["game"] : item}
+                            isUserGame={isInUserLibrary}
+                        />
+                    )}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                 />
